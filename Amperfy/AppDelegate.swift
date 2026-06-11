@@ -123,6 +123,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
   }()
 
+  public lazy var handoffManager = {
+    HandoffManager(
+      player: player,
+      library: storage.main.library,
+      eventLogger: eventLogger
+    )
+  }()
+
   var settingsSceneSession: UISceneSession?
   var miniPlayerSceneSession: UISceneSession?
 
@@ -306,6 +314,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     os_log("Start background manager after sync", log: self.log, type: .info)
     configureMainMenu()
     intentManager.registerXCallbackURLs()
+    handoffManager.start()
     if !isAlreadyRegisteredToPlayer {
       isAlreadyRegisteredToPlayer = true
       player.addNotifier(notifier: self)
@@ -316,6 +325,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     os_log("Start background manager for normal operation", log: self.log, type: .info)
     configureMainMenu()
     intentManager.registerXCallbackURLs()
+    handoffManager.start()
     for accountInfo in storage.settings.accounts.allAccounts {
       getMeta(accountInfo).startManagerForNormalOperation(player: appDelegate.player)
     }

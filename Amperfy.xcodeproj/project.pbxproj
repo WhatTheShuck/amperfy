@@ -446,6 +446,9 @@
 		50C9D6DE284FAB88007F18D0 /* PlayQueueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5011712B2744FDD700B7C08D /* PlayQueueHandler.swift */; };
 		50C9D6E3284FAB96007F18D0 /* UIImageAssetsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B053AC27BFADB200D9C1ED /* UIImageAssetsExtension.swift */; };
 		50C9D6E6284FABCB007F18D0 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C9D6E5284FABCB007F18D0 /* AudioPlayer.swift */; };
+		7A11AB02D0FF000000000002 /* PlaybackHandoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A11AB01D0FF000000000001 /* PlaybackHandoff.swift */; };
+		7A11AB04D0FF000000000004 /* HandoffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A11AB03D0FF000000000003 /* HandoffManager.swift */; };
+		7A11AB06D0FF000000000006 /* PlaybackHandoffTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A11AB05D0FF000000000005 /* PlaybackHandoffTest.swift */; };
 		50C9D6E9284FACAF007F18D0 /* ArtworkCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C9D6E8284FACAF007F18D0 /* ArtworkCollection.swift */; };
 		50C9D6EB284FAD51007F18D0 /* PodcastsShowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C9D6EA284FAD51007F18D0 /* PodcastsShowType.swift */; };
 		50C9D6ED284FADB8007F18D0 /* PlayerDisplayStyleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C9D6EC284FADB8007F18D0 /* PlayerDisplayStyleType.swift */; };
@@ -1004,6 +1007,9 @@
 		50C9D60E284FA847007F18D0 /* AmperfyKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmperfyKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50C9D615284FA847007F18D0 /* AmpertyKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmpertyKitTests.swift; sourceTree = "<group>"; };
 		50C9D6E5284FABCB007F18D0 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		7A11AB01D0FF000000000001 /* PlaybackHandoff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackHandoff.swift; sourceTree = "<group>"; };
+		7A11AB03D0FF000000000003 /* HandoffManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoffManager.swift; sourceTree = "<group>"; };
+		7A11AB05D0FF000000000005 /* PlaybackHandoffTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackHandoffTest.swift; sourceTree = "<group>"; };
 		50C9D6E8284FACAF007F18D0 /* ArtworkCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCollection.swift; sourceTree = "<group>"; };
 		50C9D6EA284FAD51007F18D0 /* PodcastsShowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsShowType.swift; sourceTree = "<group>"; };
 		50C9D6EC284FADB8007F18D0 /* PlayerDisplayStyleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDisplayStyleType.swift; sourceTree = "<group>"; };
@@ -1464,6 +1470,7 @@
 			children = (
 				508385E721C5965B00C4BB32 /* AppDelegate.swift */,
 				5059A31B28A9ED680068E4D2 /* SceneDelegate.swift */,
+				7A11AB03D0FF000000000003 /* HandoffManager.swift */,
 				63DCDB792C674B5D00522F68 /* SettingsSceneDelegate.swift */,
 				637A28B42C79409B0082FACC /* MiniPlayerSceneDelegate.swift */,
 				C0A1B0022EEE000000000002 /* MacWindowHelper.swift */,
@@ -1587,6 +1594,7 @@
 			children = (
 				5095F98B23C8389E008B0805 /* MusicPlayerTest.swift */,
 				5011712D27453D1300B7C08D /* PlayQueueHandlerTest.swift */,
+				7A11AB05D0FF000000000005 /* PlaybackHandoffTest.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -2156,6 +2164,7 @@
 				508FDE4921F44E91005A0724 /* BackendAudioPlayer.swift */,
 				501171292743F25300B7C08D /* PlayerUtil.swift */,
 				5011712B2744FDD700B7C08D /* PlayQueueHandler.swift */,
+				7A11AB01D0FF000000000001 /* PlaybackHandoff.swift */,
 				501171312756778300B7C08D /* RemoteCommandCenterHandler.swift */,
 				501171352756A8E100B7C08D /* NowPlayingInfoCenterHandler.swift */,
 				501171332756A73000B7C08D /* AudioSessionHandler.swift */,
@@ -2522,6 +2531,7 @@
 				50DE29EF2B90642E00ABA78E /* SelectionAccessory.swift in Sources */,
 				501A7D4F26820B3F0055A51B /* PodcastDetailVC.swift in Sources */,
 				5059A31C28A9ED680068E4D2 /* SceneDelegate.swift in Sources */,
+				7A11AB04D0FF000000000004 /* HandoffManager.swift in Sources */,
 				50DE29F12B90855100ABA78E /* KeyCommandCollectionViewController.swift in Sources */,
 				50E1D39C2B8BED4C0001A572 /* SideBarVC.swift in Sources */,
 				505CA20E2B88EB9A00AA81CD /* BasicFetchedResultsTableViewController.swift in Sources */,
@@ -2797,6 +2807,7 @@
 				50C9D6DB284FAB88007F18D0 /* AudioSessionHandler.swift in Sources */,
 				50C9D677284FAA4D007F18D0 /* PersistentStorage.swift in Sources */,
 				50C9D6E6284FABCB007F18D0 /* AudioPlayer.swift in Sources */,
+				7A11AB02D0FF000000000002 /* PlaybackHandoff.swift in Sources */,
 				50C9D659284FAA0B007F18D0 /* SongParserDelegate.swift in Sources */,
 				50C9D688284FAA6C007F18D0 /* SongMO+CoreDataClass.swift in Sources */,
 				50CEC6472D1F405500D0E696 /* RadioParserDelegate.swift in Sources */,
@@ -2886,6 +2897,7 @@
 				50E520D62F65886600667E0A /* GetSimiliarSongsParserTest.swift in Sources */,
 				50BE5D902850F50F00156FC6 /* PodcastEpisodesExample2ParserTest.swift in Sources */,
 				50BE5D562850F4E700156FC6 /* PlayQueueHandlerTest.swift in Sources */,
+				7A11AB06D0FF000000000006 /* PlaybackHandoffTest.swift in Sources */,
 				50BE5D4A2850F4C900156FC6 /* SongTest.swift in Sources */,
 				50CEC6492D1F41A400D0E696 /* RadiosExampleParserTest.swift in Sources */,
 				50BE5D772850F4FB00156FC6 /* SsSongExample2ParserTest.swift in Sources */,

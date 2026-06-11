@@ -250,6 +250,27 @@ public class PlayQueueHandler {
     playerQueues.removeAllItems()
   }
 
+  /// Replaces the active mode's queues with the given handoff state.
+  /// `currentIndex` refers to `contextItems`; when `isUserQueuePlaying` it is
+  /// the count of already played context items and the current item is
+  /// `userQueueItems[0]`.
+  func restoreHandoffQueues(
+    contextItems: [AbstractPlayable],
+    userQueueItems: [AbstractPlayable],
+    currentIndex: Int,
+    isUserQueuePlaying: Bool
+  ) {
+    playerQueues.clearUserQueue()
+    playerQueues.setUserQueuePlaying(false)
+    playerQueues.clearActiveQueue()
+    playerQueues.appendActiveQueue(playables: contextItems)
+    if !userQueueItems.isEmpty {
+      playerQueues.appendUserQueue(playables: userQueueItems)
+    }
+    playerQueues.setUserQueuePlaying(isUserQueuePlaying)
+    playerQueues.setCurrentIndex(isUserQueuePlaying ? currentIndex - 1 : currentIndex)
+  }
+
   func markAndGetPlayableAsPlaying(at playerIndex: PlayerIndex) -> AbstractPlayable? {
     var playable: AbstractPlayable?
     if playerIndex.queueType == .user, playerIndex.index >= 0, playerIndex.index < userQueueCount {

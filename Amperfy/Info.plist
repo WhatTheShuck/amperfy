@@ -71,6 +71,7 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INPlayMediaIntent</string>
+		<string>de.familie-zimba.amperfy-music.handoff-playback</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

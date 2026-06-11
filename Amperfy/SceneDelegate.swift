@@ -125,6 +125,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     appDelegate.setAppAppearanceMode(style: appDelegate.storage.settings.user.appearanceMode)
     AmperfyAppShortcuts.updateAppShortcutParameters()
+
+    // continue a handoff that launched the app
+    if appDelegate.isNormalInteraction {
+      for userActivity in connectionOptions.userActivities {
+        appDelegate.handoffManager.handle(userActivity)
+      }
+    }
   }
 
   func replaceMainRootViewController(vc: UIViewController) {
@@ -246,6 +253,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       type: .info,
       userActivity.activityType
     )
+    guard appDelegate.isNormalInteraction else { return }
+    appDelegate.handoffManager.handle(userActivity)
   }
 
   func scene(

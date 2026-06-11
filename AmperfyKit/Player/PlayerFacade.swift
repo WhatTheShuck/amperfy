@@ -161,6 +161,7 @@ public protocol PlayerFacade {
   var nextQueueCount: Int { get }
   func getNextQueueItems(from: Int, to: Int?) -> [AbstractPlayable]
   func getAllNextQueueItems() -> [AbstractPlayable]
+  var isUserQueuePlaying: Bool { get }
 
   var totalPlayDuration: Int { get }
   var remainingPlayDuration: Int { get }
@@ -214,6 +215,7 @@ public protocol PlayerFacade {
   func play(context: PlayContext)
   func playShuffled(context: PlayContext)
   func play(playerIndex: PlayerIndex)
+  func restoreHandoffPlayback(_ playback: ResolvedHandoffPlayback)
   func pause()
   func togglePlayPause()
   func stop()
@@ -346,6 +348,10 @@ class PlayerFacadeImpl: PlayerFacade {
 
   var nextQueueCount: Int {
     queueHandler.nextQueueCount
+  }
+
+  var isUserQueuePlaying: Bool {
+    queueHandler.isUserQueuePlaying
   }
 
   func getNextQueueItems(from: Int, to: Int?) -> [AbstractPlayable] {
@@ -632,6 +638,36 @@ class PlayerFacadeImpl: PlayerFacade {
 
   func play(playerIndex: PlayerIndex) {
     musicPlayer.play(playerIndex: playerIndex)
+  }
+
+  func restoreHandoffPlayback(_ playback: ResolvedHandoffPlayback) {
+    musicPlayer.stopButRemainIndex()
+    playerStatus.setPlayerMode(playback.playerMode)
+    if playback.playerMode == .music {
+      if playerStatus.isShuffle {
+        playerStatus.setShuffle(false)
+      }
+      playerStatus.setRepeatMode(playback.repeatMode)
+    }
+    queueHandler.restoreHandoffQueues(
+      contextItems: playback.contextItems,
+      userQueueItems: playback.userQueueItems,
+      currentIndex: playback.currentIndex,
+      isUserQueuePlaying: playback.isUserQueuePlaying
+    )
+    if playback.playerMode == .music {
+      queueHandler.setContextName(playback.contextName)
+    }
+    musicPlayer.notifyShuffleUpdated()
+    musicPlayer.notifyRepeatUpdated()
+    musicPlayer.notifyPlaylistUpdated()
+    guard let currentItem = queueHandler.currentlyPlaying else { return }
+    if playback.elapsedTime > 0, !currentItem.isRadio {
+      musicPlayer.initialSeekTime = playback.elapsedTime
+    }
+    if playback.isPlaying {
+      musicPlayer.play()
+    }
   }
 
   func pause() {

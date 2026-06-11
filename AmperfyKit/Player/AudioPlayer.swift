@@ -55,6 +55,9 @@ public class AudioPlayer: NSObject, BackendAudioPlayerNotifiable {
 
   var isShouldPauseAfterFinishedPlaying = false
   var autoMixCB: (@MainActor (Song) async throws -> [Song])?
+  /// One-shot seek applied when the current item starts playing the next time;
+  /// used to continue at the handed-off position regardless of resume settings.
+  var initialSeekTime: Double?
 
   private var playerStatus: PlayerStatusPersistent
   private var queueHandler: PlayQueueHandler
@@ -159,6 +162,7 @@ public class AudioPlayer: NSObject, BackendAudioPlayerNotifiable {
 
   public func play(context: PlayContext) {
     guard let activePlayable = context.getActivePlayable() else { return }
+    initialSeekTime = nil
     let topUserQueueItem = queueHandler.getUserQueueItem(at: 0)
     let wasUserQueuePlaying = queueHandler.isUserQueuePlaying
     queueHandler.clearActiveQueue()
@@ -180,6 +184,7 @@ public class AudioPlayer: NSObject, BackendAudioPlayerNotifiable {
   }
 
   func play(playerIndex: PlayerIndex) {
+    initialSeekTime = nil
     guard let playable = queueHandler.markAndGetPlayableAsPlaying(at: playerIndex) else {
       stop()
       return
@@ -254,12 +259,14 @@ public class AudioPlayer: NSObject, BackendAudioPlayerNotifiable {
 
   // BackendAudioPlayerNotifiable
   func stop() {
+    initialSeekTime = nil
     backendAudioPlayer.stop()
     playerStatus.stop()
     notifyPlayerStopped()
   }
 
   func stopButRemainIndex() {
+    initialSeekTime = nil
     backendAudioPlayer.stop()
     notifyPlayerStopped()
   }
@@ -273,6 +280,11 @@ public class AudioPlayer: NSObject, BackendAudioPlayerNotifiable {
   }
 
   private func seekToLastStoppedPlayTime() {
+    if let initialSeekTime = initialSeekTime {
+      self.initialSeekTime = nil
+      backendAudioPlayer.seek(toSecond: initialSeekTime)
+      return
+    }
     if let playable = currentlyPlaying,
        playable.playProgress > 0,
        playable
